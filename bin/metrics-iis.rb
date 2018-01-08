@@ -25,8 +25,6 @@ class IISMetrics < Sensu::Plugin::Metric::CLI::Graphite
 def run
     
   IO.popen("typeperf -sc 1 \"Web Service(#{config[:site]})\\Current\ Connections\"  \"Web Service(#{config[:site]})\\Total Get Requests\" \"Web Service(#{config[:site]})\\Get Requests/sec\" \"Web Service(#{config[:site]})\\Total Get Requests\" \"Web Service(#{config[:site]})\\Total Post Requests\" \"Web Service(#{config[:site]})\\Post Requests/sec\"  ") do |io|
-  #puts "typeperf -sc 1 \"Web Service(#{config[:site]})\\Current\ Connections\"  \"Web Service(#{config[:site]})\\Total Get Requests\" \"Web Service(#{config[:site]})\\Get Requests/sec\" \"Web Service(#{config[:site]})\\Total Get Requests\" \"Web Service(#{config[:site]})\\Total Post Requests\" \"Web Service(#{config[:site]})\\Post Requests/sec\"  "
-  #IO.popen("cat /Users/haviv.rosh/work/sensu/wmi/type_perf_iis_output.txt") do |io|
     CSV.parse(io.read, headers: true) do |row|
       row.each do |k, v|
           next unless v && k
